@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>قناة حفظ القرآن الكريم</title>
+<!-- معاينة فايسبوك: ارفع الصورة المحمّلة باسم fb.png بجانب الصفحة، ثم استبدل الرابط أدناه برابط صفحتك الكامل -->
+<meta property="og:type" content="website">
+<meta property="og:title" content="قناة حفظ القرآن الكريم">
+<meta property="og:description" content="اختر السورة والقارئ، كرّر الآيات، وأخفِ النص لتختبر حفظك">
+<meta property="og:image" content="fb.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<style>
+:root{--bg:#0b1630;--card:#13224a;--gold:#e2b857;--tx:#f4efe2;--mut:#9fb0d6;--hl:#1d3470}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--tx);font-family:"Amiri","Traditional Arabic",Tahoma,serif;line-height:1.6}
+header{text-align:center;padding:22px 12px;background:linear-gradient(160deg,#16306b,#0b1630);border-bottom:2px solid var(--gold)}
+header h1{margin:0;color:var(--gold);font-size:1.7rem}
+header p{margin:4px 0 0;color:var(--mut);font-size:.95rem}
+.wrap{max-width:1000px;margin:auto;padding:12px;display:grid;gap:12px;grid-template-columns:260px 1fr}
+@media(max-width:760px){.wrap{grid-template-columns:1fr}}
+.card{background:var(--card);border-radius:12px;padding:12px}
+#search{width:100%;padding:8px;border-radius:8px;border:1px solid var(--gold);background:var(--bg);color:var(--tx);font:inherit}
+#list{margin-top:8px;max-height:60vh;overflow:auto}
+.s{display:flex;gap:8px;padding:8px;border-radius:8px;cursor:pointer;align-items:center}
+.s:hover,.s.on{background:var(--hl)}
+.s b{min-width:28px;height:28px;border-radius:50%;background:var(--gold);color:#111;display:flex;align-items:center;justify-content:center;font-size:.8rem}
+.s small{color:var(--mut);margin-right:auto}
+.ctl{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:8px;margin-bottom:10px}
+label{font-size:.85rem;color:var(--mut);display:block}
+select,input[type=number]{width:100%;padding:7px;border-radius:8px;border:1px solid var(--mut);background:var(--bg);color:var(--tx);font:inherit}
+.btns{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0}
+button,a.btn{background:var(--gold);color:#111;border:0;border-radius:8px;padding:9px 14px;font:inherit;font-weight:bold;cursor:pointer;text-decoration:none;display:inline-block}
+button.alt,a.btn.alt{background:var(--hl);color:var(--tx)}
+button.red{background:#c0392b;color:#fff}
+#title{color:var(--gold);font-size:1.3rem;margin:0 0 8px;text-align:center}
+#ayat{max-height:50vh;overflow:auto;font-size:1.6rem;line-height:2.4;text-align:justify;padding:6px}
+.a{padding:2px 6px;border-radius:8px;cursor:pointer}
+.a.on{background:var(--hl);outline:1px solid var(--gold)}
+.hide .a:not(.on){filter:blur(9px)}
+.hide .a.on{filter:none}
+.num{color:var(--gold);font-size:1.1rem}
+#st{text-align:center;color:var(--mut);font-size:.9rem;min-height:1.4em}
+#out{margin-top:12px;display:grid;gap:12px}
+#out:empty{display:none}
+.box{background:var(--bg);border:1px solid var(--hl);border-radius:10px;padding:10px;text-align:center}
+.box h3{margin:0 0 8px;color:var(--gold);font-size:1.05rem}
+.box video,.box canvas{max-width:100%;border-radius:8px}
+.note{color:var(--mut);font-size:.8rem;margin-top:6px}
+</style>
+</head>
+<body>
+<header><h1>  قناة حفظ القرآن الكريم</h1><p>اختر السورة والقارئ، كرّر الآيات، وأخفِ النص لتختبر حفظك</p></header>
+<div class="wrap">
+ <aside class="card"><input id="search" placeholder="ابحث عن سورة…"><div id="list"></div></aside>
+ <main class="card">
+  <h2 id="title">اختر سورة من القائمة</h2>
+  <div class="ctl">
+   <div><label>القارئ</label><select id="rec">
+    <option value="ar.alafasy">مشاري العفاسي</option>
+    <option value="ar.husary">محمود خليل الحصري</option>
+    <option value="ar.minshawi">محمد صديق المنشاوي</option>
+    <option value="ar.abdulbasitmurattal">عبد الباسط (مرتل)</option>
+    <option value="ar.mahermuaiqly">ماهر المعيقلي</option>
+    <option value="ar.shaatree">أبو بكر الشاطري</option>
+    <option value="ar.abdurrahmaansudais">عبد الرحمن السديس</option>
+   </select></div>
+   <div><label>من آية</label><input type="number" id="from" min="1" value="1"></div>
+   <div><label>إلى آية</label><input type="number" id="to" min="1" value="1"></div>
+   <div><label>تكرار الآية</label><input type="number" id="repA" min="1" max="20" value="3"></div>
+   <div><label>تكرار المقطع</label><input type="number" id="repR" min="1" max="20" value="2"></div>
+   <div><label>السرعة</label><select id="spd"><option>0.75</option><option selected>1</option><option>1.25</option></select></div>
+  </div>
+  <div class="btns">
+   <button id="play">▶ تشغيل</button>
+   <button class="alt" id="prev">⏮ السابقة</button>
+   <button class="alt" id="next">⏭ التالية</button>
+   <button class="alt" id="hide">👁 إخفاء النص</button>
+  </div>
+  <div class="btns">
+   <button id="vmake">🎬 إنشاء فيديو</button>
+   <button class="red" id="vstop" style="display:none">⏹ إنهاء التسجيل</button>
+   <button class="alt" id="adl">⬇ تحميل الصوت</button>
+   <button class="alt" id="fbimg">🖼 صورة واجهة فايسبوك</button>
+  </div>
+  <div id="st"></div>
+  <div id="ayat"></div>
+  <div id="out"></div>
+ </main>
+</div>
+<audio id="au" crossorigin="anonymous"></audio>
+<script>
+const $=id=>document.getElementById(id);
+const au=$('au');
+au.crossOrigin='anonymous';
+let surahs=[],S=null,idx=0,ra=0,rr=0,playing=false,curN=0;
+const save=()=>{try{localStorage.setItem('hifz',JSON.stringify({n:curN,rec:$('rec').value}))}catch(e){}};
+async function loadList(){
+ try{
+  const r=await fetch('https://api.alquran.cloud/v1/surah');surahs=(await r.json()).data;
+  draw();
+  let st=null;try{st=JSON.parse(localStorage.getItem('hifz'))}catch(e){}
+  if(st){$('rec').value=st.rec||'ar.alafasy';openS(st.n||1)}
+ }catch(e){$('list').textContent='تعذّر تحميل القائمة، تحقق من الاتصال.'}
+}
+function draw(){
+ const q=$('search').value.trim();
+ $('list').innerHTML=surahs.filter(s=>!q||s.name.includes(q)||String(s.number)===q).map(s=>
+  `<div class="s ${s.number===curN?'on':''}" data-n="${s.number}"><b>${s.number}</b><span>${s.name.replace('سُورَةُ ','')}</span><small>${s.numberOfAyahs} آية</small></div>`).join('');
+}
+$('list').onclick=e=>{const d=e.target.closest('.s');if(d)openS(+d.dataset.n)};
+$('search').oninput=draw;
+async function openS(n){
+ stop();curN=n;draw();$('st').textContent='جارٍ التحميل…';
+ try{
+  const r=await fetch(`https://api.alquran.cloud/v1/surah/${n}/editions/quran-uthmani,${$('rec').value}`);
+  const d=(await r.json()).data;
+  S=d[0].ayahs.map((a,i)=>({n:a.numberInSurah,t:a.text,u:d[1].ayahs[i].audio}));
+  $('title').textContent=d[0].name;
+  $('from').value=1;$('to').value=S.length;$('from').max=$('to').max=S.length;
+  $('ayat').innerHTML=S.map((a,i)=>`<span class="a" data-i="${i}">${a.t} <span class="num">﴿${a.n}﴾</span></span>`).join(' ');
+  $('st').textContent='';save();
+ }catch(e){$('st').textContent='تعذّر تحميل السورة.'}
+}
+$('rec').onchange=()=>{if(curN)openS(curN)};
+$('ayat').onclick=e=>{const d=e.target.closest('.a');if(d){ra=0;rr=0;go(+d.dataset.i)}};
+function rng(){const f=Math.max(1,+$('from').value)-1,t=Math.min(S.length,+$('to').value)-1;return[f,Math.max(f,t)]}
+function go(i){
+ if(!S)return;idx=i;playing=true;$('play').textContent='⏸ إيقاف مؤقت';
+ document.querySelectorAll('.a').forEach(x=>x.classList.toggle('on',+x.dataset.i===i));
+ const el=document.querySelector('.a.on');if(el)el.scrollIntoView({block:'center',behavior:'smooth'});
+ au.src=S[i].u;au.playbackRate=+$('spd').value;au.play().catch(()=>{});
+ $('st').textContent=`الآية ${S[i].n} — تكرار الآية ${ra+1}/${$('repA').value} — تكرار المقطع ${rr+1}/${$('repR').value}`;
+}
+au.onended=()=>{
+ const[f,t]=rng();ra++;
+ if(ra<+$('repA').value)return go(idx);
+ ra=0;
+ if(idx<t)return go(idx+1);
+ rr++;
+ if(rr<+$('repR').value)return go(f);
+ rr=0;stop();$('st').textContent='انتهى المقطع ✅ بارك الله فيك';
+ if(recording)endVideo();
+};
+function stop(){au.pause();playing=false;$('play').textContent='▶ تشغيل'}
+$('play').onclick=()=>{
+ if(!S)return;
+ if(playing){au.pause();playing=false;$('play').textContent='▶ تشغيل'}
+ else if(au.src&&au.currentTime>0&&!au.ended){au.play();playing=true;$('play').textContent='⏸ إيقاف مؤقت'}
+ else{ra=0;rr=0;go(rng()[0])}
+};
+$('next').onclick=()=>{if(S){ra=0;go(Math.min(S.length-1,idx+1))}};
+$('prev').onclick=()=>{if(S){ra=0;go(Math.max(0,idx-1))}};
+$('hide').onclick=()=>{const h=$('ayat').classList.toggle('hide');$('hide').textContent=h?'👁 إظهار النص':'👁 إخفاء النص'};
+
+/* ---------- أدوات الرسم المشتركة ---------- */
+const FONT='"Amiri","Traditional Arabic",Tahoma,serif';
+function wrapText(x,text,maxW){
+ const words=text.split(' ');const lines=[];let l='';
+ for(const w of words){const t=l?l+' '+w:w;if(x.measureText(t).width>maxW&&l){lines.push(l);l=w}else l=t}
+ if(l)lines.push(l);return lines;
+}
+function drawBg(x,w,h){
+ const g=x.createLinearGradient(0,0,w,h);g.addColorStop(0,'#16306b');g.addColorStop(1,'#0b1630');
+ x.fillStyle=g;x.fillRect(0,0,w,h);
+ x.strokeStyle='#e2b857';x.lineWidth=6;x.strokeRect(20,20,w-40,h-40);
+ x.lineWidth=2;x.strokeRect(34,34,w-68,h-68);
+}
+function recName(){return $('rec').selectedOptions[0].text}
+function download(blob,name){
+ const u=URL.createObjectURL(blob);const a=document.createElement('a');
+ a.href=u;a.download=name;document.body.appendChild(a);a.click();a.remove();
+ setTimeout(()=>URL.revokeObjectURL(u),60000);
+}
+function box(id,title){
+ let b=$(id);if(!b){b=document.createElement('div');b.id=id;b.className='box';$('out').prepend(b)}
+ b.innerHTML=`<h3>${title}</h3>`;return b;
+}
+const cleanName=()=>($('title').textContent||'quran').replace(/\s+/g,'_');
+
+/* ---------- إنشاء الفيديو وحفظه ---------- */
+const vc=document.createElement('canvas');vc.width=1280;vc.height=720;
+const vx=vc.getContext('2d');
+let actx=null,adest=null,recorder=null,chunks=[],recording=false;
+function setupAudio(){
+ if(actx)return;
+ actx=new (window.AudioContext||window.webkitAudioContext)();
+ const src=actx.createMediaElementSource(au);
+ adest=actx.createMediaStreamDestination();
+ src.connect(adest);src.connect(actx.destination);
+}
+function drawFrame(){
+ const x=vx,w=vc.width,h=vc.height;
+ drawBg(x,w,h);
+ x.direction='rtl';x.textAlign='center';x.textBaseline='middle';
+ x.fillStyle='#e2b857';x.font=`bold 46px ${FONT}`;
+ x.fillText($('title').textContent,w/2,92);
+ const a=S&&S[idx];
+ if(a){
+  const txt=`${a.t} ﴿${a.n}﴾`;
+  x.fillStyle='#f4efe2';
+  let size=66,lines=[];
+  for(;size>=26;size-=2){
+   x.font=`${size}px ${FONT}`;lines=wrapText(x,txt,1080);
+   if(lines.length*size*1.8<=400)break;
+  }
+  const lh=size*1.8,y0=h/2+8-(lines.length-1)*lh/2;
+  lines.forEach((l,i)=>x.fillText(l,w/2,y0+i*lh));
+ }
+ x.fillStyle='#9fb0d6';x.font=`26px ${FONT}`;
+ x.fillText(`القارئ: ${recName()}   •   تكرار الآية ${ra+1}/${$('repA').value}`,w/2,h-100);
+ x.fillStyle='#e2b857';x.font=`bold 28px ${FONT}`;
+ x.fillText('قناة حفظ القرآن الكريم',w/2,h-62);
+}
+function drawLoop(){if(!recording)return;drawFrame();requestAnimationFrame(drawLoop)}
+async function makeVideo(){
+ if(!S){alert('اختر سورة أولاً');return}
+ if(!window.MediaRecorder||!vc.captureStream){alert('هذا المتصفح لا يدعم تسجيل الفيديو. جرّب Chrome أو Edge أو Firefox.');return}
+ try{setupAudio();await actx.resume()}catch(e){alert('تعذّر تهيئة الصوت');return}
+ const types=['video/mp4;codecs=avc1,mp4a.40.2','video/webm;codecs=vp9,opus','video/webm;codecs=vp8,opus','video/webm'];
+ const mime=types.find(t=>MediaRecorder.isTypeSupported(t))||'';
+ const stream=vc.captureStream(30);
+ adest.stream.getAudioTracks().forEach(t=>stream.addTrack(t));
+ try{recorder=new MediaRecorder(stream,mime?{mimeType:mime,videoBitsPerSecond:2500000}:undefined)}
+ catch(e){alert('تعذّر بدء التسجيل');return}
+ chunks=[];
+ recorder.ondataavailable=e=>{if(e.data&&e.data.size)chunks.push(e.data)};
+ recorder.onstop=finishVideo;
+ recording=true;recorder.start(500);
+ $('vmake').disabled=true;$('vstop').style.display='';
+ const b=box('vbox','🎬 جارٍ تسجيل الفيديو…');
+ b.innerHTML+='<div class="note">ابقَ في هذه الصفحة حتى ينتهي المقطع (يُسجَّل بحسب الآيات والتكرار المحددين).</div>';
+ drawLoop();
+ ra=0;rr=0;go(rng()[0]);
+}
+function endVideo(){
+ if(!recording)return;
+ recording=false;
+ setTimeout(()=>{try{recorder.stop()}catch(e){}},500);
+}
+function finishVideo(){
+ $('vmake').disabled=false;$('vstop').style.display='none';
+ const type=(recorder&&recorder.mimeType)||'video/webm';
+ const ext=type.includes('mp4')?'mp4':'webm';
+ const blob=new Blob(chunks,{type});
+ const b=box('vbox','🎬 الفيديو جاهز');
+ const v=document.createElement('video');v.controls=true;v.src=URL.createObjectURL(blob);v.style.width='100%';
+ b.appendChild(v);
+ const name=`${cleanName()}_${$('from').value}-${$('to').value}.${ext}`;
+ const d=document.createElement('button');d.textContent='💾 حفظ الفيديو في الجهاز';
+ d.style.marginTop='8px';d.onclick=()=>download(blob,name);b.appendChild(d);
+ download(blob,name);
+ if(ext==='webm'){const n=document.createElement('div');n.className='note';
+  n.textContent='الصيغة WebM مقبولة في فايسبوك وواتساب حديثًا؛ وإن لم تُقبل حوّلها إلى MP4 بأي محوّل.';b.appendChild(n)}
+}
+$('vmake').onclick=makeVideo;
+$('vstop').onclick=()=>{stop();endVideo()};
+
+/* ---------- تحميل الصوت (المقطع المحدد) ---------- */
+$('adl').onclick=async()=>{
+ if(!S){alert('اختر سورة أولاً');return}
+ const[f,t]=rng();const parts=[];
+ try{
+  for(let i=f;i<=t;i++){
+   $('st').textContent=`تحميل الصوت ${i-f+1}/${t-f+1}…`;
+   const r=await fetch(S[i].u);if(!r.ok)throw 0;
+   parts.push(await r.arrayBuffer());
+  }
+  download(new Blob(parts,{type:'audio/mpeg'}),`${cleanName()}_${f+1}-${t+1}_${$('rec').value.replace('ar.','')}.mp3`);
+  $('st').textContent='تم تحميل الصوت ✅';
+ }catch(e){$('st').textContent='تعذّر تحميل الصوت، تحقق من الاتصال.'}
+};
+
+/* ---------- صورة واجهة فايسبوك (1200×630) ---------- */
+$('fbimg').onclick=()=>{
+ const c=document.createElement('canvas');c.width=1200;c.height=630;
+ const x=c.getContext('2d'),w=1200,h=630;
+ drawBg(x,w,h);
+ x.direction='rtl';x.textAlign='center';x.textBaseline='middle';
+ x.fillStyle='#e2b857';x.font=`bold 84px ${FONT}`;
+ x.fillText('قناة حفظ القرآن الكريم',w/2,150);
+ x.fillStyle='#f4efe2';x.font=`64px ${FONT}`;
+ x.fillText('بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ',w/2,300);
+ x.fillStyle='#9fb0d6';x.font=`34px ${FONT}`;
+ x.fillText('اختر السورة والقارئ، كرّر الآيات، وأخفِ النص لتختبر حفظك',w/2,400);
+ const chips=['🎧 استماع','🔁 تكرار','👁 إخفاء','🎬 فيديو'];
+ const cw=220,gap=24,total=chips.length*cw+(chips.length-1)*gap;
+ chips.forEach((t,i)=>{
+  const cx=(w+total)/2-cw-i*(cw+gap);
+  x.fillStyle='#1d3470';x.beginPath();x.roundRect(cx,470,cw,64,32);x.fill();
+  x.strokeStyle='#e2b857';x.lineWidth=2;x.stroke();
+  x.fillStyle='#f4efe2';x.font=`30px ${FONT}`;x.fillText(t,cx+cw/2,503);
+ });
+ const b=box('fbbox','🖼 صورة واجهة فايسبوك');
+ c.style.width='100%';b.appendChild(c);
+ const d=document.createElement('button');d.textContent='💾 حفظ الصورة (fb.png)';d.style.marginTop='8px';
+ d.onclick=()=>c.toBlob(bl=>download(bl,'fb.png'),'image/png');b.appendChild(d);
+ const n=document.createElement('div');n.className='note';
+ n.textContent='ارفع الصورة باسم fb.png بجانب الصفحة (GitHub Pages) وضع رابطها الكامل في وسم og:image ليظهر الغلاف عند مشاركة الرابط.';
+ b.appendChild(n);
+};
+loadList();
+</script>
+</body>
+</html>
